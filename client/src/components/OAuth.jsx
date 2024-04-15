@@ -1,18 +1,19 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"; // Import signInWithPopup
-import { getAuth } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase";
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
-function Oauth() {
+
+export default function OAuth() {
   const dispatch = useDispatch();
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
-      const result = await signInWithPopup(auth, provider);
 
+      const result = await signInWithPopup(auth, provider);
+      console.log(result);
       const res = await fetch("/api/auth/google", {
         method: "POST",
         headers: {
@@ -25,22 +26,21 @@ function Oauth() {
         }),
       });
       const data = await res.json();
+      console.log(data);
+
       dispatch(signInSuccess(data));
-      navigator("/");
+      navigate("/");
     } catch (error) {
-      console.error("Could not sign in with Google", error); // Use console.error for better error logging
+      console.log("could not sign in with google", error);
     }
   };
-
   return (
     <button
       onClick={handleGoogleClick}
       type="button"
       className="p-3 text-white uppercase bg-red-700 rounded-lg hover:opacity-95"
     >
-      Continue with Google
+      Continue with google
     </button>
   );
 }
-
-export default Oauth;

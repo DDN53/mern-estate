@@ -7,9 +7,10 @@ export const test = (req, res) => {
     message: "Api is working!",
   });
 };
+
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
-    return next(errorHandler(401, "You can update only one account!"));
+    return next(errorHandler(401, "You can update only your own account!"));
   }
   try {
     if (req.body.password) {
@@ -28,7 +29,7 @@ export const updateUser = async (req, res, next) => {
       { new: true }
     );
     const { password, ...rest } = updateUser._doc;
-    res.json(200).json(rest);
+    res.status(200).json(rest);
   } catch (error) {
     next(error);
   }
