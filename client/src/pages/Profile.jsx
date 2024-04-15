@@ -11,7 +11,10 @@ import {
   updateUserStart,
   updateUserSuccess,
   updateUserFailure,
+  deleteUserStart,
+  deleteUserFailure,
 } from "../redux/user/userSlice";
+import { data } from "autoprefixer";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -85,6 +88,25 @@ export default function Profile() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        dispatch(deleteUserSuccess(data.message));
+        return;
+      }
+      dispatch(deleteUserFailure(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+      return;
+    }
+    dispatch(deleteUserSuccess(data));
+  };
+
   const handleChange = async (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -152,7 +174,7 @@ export default function Profile() {
           {loading ? "Updating..." : "Update"}
         </button>
       </form>
-      <div className="flex justify-between mt-5">
+      <div onClick={handleDelete} className="flex justify-between mt-5">
         <span className="text-red-700 cursor-pointer">Delete Account</span>
         <span className="text-red-700 cursor-pointer">Sign out</span>
       </div>
