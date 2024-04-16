@@ -13,6 +13,9 @@ import {
   updateUserFailure,
   deleteUserStart,
   deleteUserFailure,
+  deleteUserSuccess,
+  signOutUserFailure,
+  signOutUserStart,
 } from "../redux/user/userSlice";
 import { data } from "autoprefixer";
 
@@ -68,7 +71,6 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(updateUserStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
@@ -77,43 +79,61 @@ export default function Profile() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.success) {
-        dispatch(updateUserSuccess(data.message));
+      const { success, message } = data;
+      if (success) {
+        dispatch(updateUserSuccess(message));
         return;
       }
-      dispatch(updateUserFailure(data));
+      dispatch(updateUserFailure(message));
       setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: "DELETE",
       });
       const data = await res.json();
-      if (data.success) {
-        dispatch(deleteUserSuccess(data.message));
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
         return;
       }
-      dispatch(deleteUserFailure(data));
+      dispatch(deleteUserSuccess(data));
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
-      return;
+      console.log(res);
     }
-    dispatch(deleteUserSuccess(data));
+  };
+  const handleSignOut = async (e) => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch(`/api/auth/signOut`, {
+        method: "POST",
+      });
+      const data = await res.json();
+
+      if (data.success === false) {
+        dispatch(signOutUserFailure(message));
+        return;
+      }
+      dispatch(signOutSuccess(message));
+    } catch (error) {
+      dispatch(signOutUserFailure(error.message));
+    }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
       [e.target.id]: e.target.value,
     }));
   };
   console.log(formData);
+
   return (
     <div className="max-w-lg p-3 mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -127,7 +147,7 @@ export default function Profile() {
         />
         <img
           onClick={() => fileRef.current.click()}
-          src={formData?.avatar || currentUser.avatar}
+          src={currentUser.avatar}
           alt="profile"
           className="self-center object-cover w-32 h-32 mt-2 rounded-full cursor-pointer bg-slate-400"
         />
@@ -174,10 +194,18 @@ export default function Profile() {
           {loading ? "Updating..." : "Update"}
         </button>
       </form>
-      <div onClick={handleDelete} className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
-        <span className="text-red-700 cursor-pointer">Sign out</span>
+      <div className="flex justify-between mt-5">
+        <span
+          onClick={handleDeleteUser}
+          className="text-red-700 cursor-pointer"
+        >
+          Delete Account
+        </span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+          Sign out
+        </span>
       </div>
+
       <p className="mt-5 text-red-700">{error ? error.message : ""}</p>
       <p className="mt-5 text-green-700">
         {updateSuccess ? "user is update Successfully!" : ""}

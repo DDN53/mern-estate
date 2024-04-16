@@ -27,9 +27,10 @@ export default function SignUp() {
       });
       //response eke json widiyata denna ona nisa mehema dannee
       const data = await res.json();
+      console.log(data);
       if (data.success == false) {
-        setError(data.message);
         setLoading(false);
+        setError(data.message);
         return;
       }
       setLoading(false);
@@ -81,7 +82,7 @@ export default function SignUp() {
         </Link>
       </div>
 
-      {error && <p className="text-red-500 mt-5">{error}</p>}
+      {error && <p className="mt-5 text-red-500">{error}</p>}
     </div>
   );
 }

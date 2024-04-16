@@ -14,3 +14,4 @@ export default defineConfig({
   },
   plugins: [react()],
 });
+//http://localhost:3000/api/user/delete
