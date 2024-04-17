@@ -17,7 +17,7 @@ import {
   signOutUserFailure,
   signOutUserStart,
 } from "../redux/user/userSlice";
-import { data } from "autoprefixer";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -189,10 +189,13 @@ export default function Profile() {
         />
         <button
           disabled={loading}
-          className="p-3 text-white uppercase rounded-lg bg-slate-700 hover:opacity-95 disabled:opacity-85"
+          className="p-3 text-white  rounded-lg uppercase text-center hover:opacity-95"
         >
-          {loading ? "Updating..." : "Update"}
+          {loading ? "Loading..." : "Update"}
         </button>
+        <Link className="bg-green-700 text-white p-3 " to={"/create-listing"}>
+          create Listing
+        </Link>
       </form>
       <div className="flex justify-between mt-5">
         <span
