@@ -5,7 +5,7 @@ import userRouter from "./routers/user.routers.js";
 import authRouter from "./routers/auth.router.js";
 import listingRouter from "./routers/listing.route.js";
 import cookieParser from "cookie-parser";
-import cors from "cors";
+
 dotenv.config();
 
 mongoose
@@ -16,14 +16,9 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-const corsOptions = {
-  origin: "http://localhost:3000",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+
 const app = express();
-app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 

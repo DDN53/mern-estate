@@ -28,7 +28,7 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
-
+  console.log(filePerc);
   useEffect(() => {
     if (file) {
       handleFileUpload(file);
@@ -147,7 +147,7 @@ export default function Profile() {
         />
         <img
           onClick={() => fileRef.current.click()}
-          src={currentUser.avatar}
+          src={formData.avatar || currentUser.avatar}
           alt="profile"
           className="self-center object-cover w-32 h-32 mt-2 rounded-full cursor-pointer bg-slate-400"
         />
@@ -189,11 +189,11 @@ export default function Profile() {
         />
         <button
           disabled={loading}
-          className="p-3 text-white  rounded-lg uppercase text-center hover:opacity-95"
+          className="p-3 text-center text-white uppercase rounded-lg hover:opacity-95"
         >
           {loading ? "Loading..." : "Update"}
         </button>
-        <Link className="bg-green-700 text-white p-3 " to={"/create-listing"}>
+        <Link className="p-3 text-white bg-green-700 " to={"/create-listing"}>
           create Listing
         </Link>
       </form>
