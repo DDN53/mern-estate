@@ -6,11 +6,11 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "mern-estate-c4f36.firebaseapp.com",
-  projectId: "mern-estate-c4f36",
-  storageBucket: "mern-estate-c4f36.appspot.com",
-  messagingSenderId: "452977709019",
-  appId: "1:452977709019:web:899363c7340c8b6278a1fe",
+  authDomain: "sl-voteing.firebaseapp.com",
+  projectId: "sl-voteing",
+  storageBucket: "sl-voteing.appspot.com",
+  messagingSenderId: "712553039426",
+  appId: "1:712553039426:web:de65ff26c5eca1e2a68fdb",
 };
 
 // Initialize Firebase
