@@ -152,6 +152,23 @@ export default function Profile() {
     }));
   };
   console.log(formData);
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="max-w-lg p-3 mx-auto">
@@ -166,7 +183,7 @@ export default function Profile() {
         />
         <img
           onClick={() => fileRef.current.click()}
-          src={formData.avatar || currentUser.avatar}
+          // src={formData.avatar || currentUser.avatar}
           alt="profile"
           className="self-center object-cover w-32 h-32 mt-2 rounded-full cursor-pointer bg-slate-400"
         />
@@ -187,7 +204,7 @@ export default function Profile() {
         <input
           type="username"
           placeholder="username"
-          defaultValue={currentUser.username}
+          //defaultValue={currentUser.username}
           id="username"
           className="p-3 border rounded-lg"
           onChange={handleChange}
@@ -195,7 +212,7 @@ export default function Profile() {
         <input
           type="email"
           placeholder="email"
-          defaultValue={currentUser.email}
+          //defaultValue={currentUser.email}
           id="email"
           className="p-3 border rounded-lg"
           onChange={handleChange}
